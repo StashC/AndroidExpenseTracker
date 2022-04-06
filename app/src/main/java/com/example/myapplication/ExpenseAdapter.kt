@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.provider.Settings.Secure.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_expense.view.*
 
 class ExpenseAdapter(
-    private val expenses: MutableList<Expense>
+    var adpter_expenses: ExpenseList
 
 ) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>(){
 
@@ -25,18 +24,18 @@ class ExpenseAdapter(
     }
 
     fun addExpense(expense: Expense){
-        expenses.add(expense);
-        notifyItemInserted(expenses.size - 1)
+        adpter_expenses.expenses.add(expense);
+        notifyItemInserted(adpter_expenses.expenses.size - 1)
     }
 
     fun deleteExpense(expense: Expense){
-        var i = expenses.indexOf(expense)
-        expenses.remove(expense);
+        var i = adpter_expenses.expenses.indexOf(expense)
+        adpter_expenses.expenses.remove(expense);
         notifyItemRemoved(i)
     }
 
     override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        val curExpense = expenses[position]
+        val curExpense = adpter_expenses.expenses[position]
         holder.itemView.apply {
             tvExpenseName.text = curExpense.name
             tvExpenseCost.text = curExpense.cost.toString()
@@ -46,6 +45,6 @@ class ExpenseAdapter(
     }
 
     override fun getItemCount(): Int {
-        return expenses.size
+        return adpter_expenses.expenses.size
     }
 }
