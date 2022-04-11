@@ -15,7 +15,7 @@
         android:text="example text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvExpenseCost"
+        app:layout_constraintEnd_toStartOf="@+id/tvExpenseCategory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:paddingStart="20dp"
         android:paddingEnd="8dp"
-        android:textSize="20sp"
         android:text="$24.99"
+        android:textSize="20sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvExpenseCategory"
+        app:layout_constraintEnd_toStartOf="@+id/btnRemove"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -38,12 +38,27 @@
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
         android:paddingEnd="20dp"
-        android:textSize="14sp"
         android:text="Category"
+        android:textSize="14sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvExpenseCost"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:text="remove"
+        android:textSize="12sp"
+        android:scaleX="0.85"
+        android:scaleY="0.85"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

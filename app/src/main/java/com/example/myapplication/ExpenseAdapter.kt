@@ -41,6 +41,10 @@ class ExpenseAdapter(
             tvExpenseCost.text = curExpense.cost.toString()
             //tvExpenseCost.text = getString(R.string.expense_cost, curExpense.cost);
             tvExpenseCategory.text = curExpense.category
+            btnRemove.setOnClickListener{
+                deleteExpense(curExpense)
+                ExpensePreferencesManager.put(adpter_expenses, "Expense_List")
+            }
         }
     }
 
