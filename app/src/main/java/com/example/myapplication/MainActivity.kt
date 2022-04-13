@@ -6,55 +6,35 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.*
 
+val tabArray = arrayOf(
+    "Spending",
+    "Overview",
+    "Budget"
+)
+
 class MainActivity : AppCompatActivity() {
-
-    //lateinit promises kotlin we will initialize it later
-    private lateinit var expenseAdapter : ExpenseAdapter
-
-    private lateinit var sp : SharedPreferences
-    //private lateinit var expensesArray : ExpenseList
-
+    lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ExpensePreferencesManager.with(this.application)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        val retrievedExpenseList = ExpensePreferencesManager.get<ExpenseList>("Expense_List")
-        if(retrievedExpenseList != null){
-            expenseAdapter = ExpenseAdapter(retrievedExpenseList)
-        } else {
-            expenseAdapter = ExpenseAdapter(ExpenseList(ArrayList()))
-        }
-        //rvExpenseItems is the tag we set for the RecyclerView in the activity_main.xml
-        rvExpenseItems.adapter = expenseAdapter
-        rvExpenseItems.layoutManager = LinearLayoutManager(this)
+        val mainView = binding.root
+        setContentView(mainView)
 
-        val spinner: Spinner = findViewById(spnrExpenseCategory.id)
+        val viewPager = binding.mainViewPager
+        val tabLayout = binding.tabLayout
 
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.categories_array,
-            android.R.layout.simple_spinner_item
-        ).also {adapter ->
-            //specify the loayout to use
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter;
-        }
+        val adapter = PagerAdapter(supportFragmentManager, lifecycle)
+        viewPager.adapter = adapter
 
-        btnAddExpense.setOnClickListener{
-            val expenseName = ExpenseNameIn.text.toString()
-            val expenseCost = ExpenseCostIn.text.toString().toDouble()
-            val expenseCategory = spnrExpenseCategory.selectedItem.toString()
-            if(expenseName.isNotEmpty() && expenseCost > 0 && expenseCategory.isNotEmpty()){
-                val expense = Expense(expenseName, expenseCost, expenseCategory)
-                expenseAdapter.addExpense(expense)
-
-                ExpensePreferencesManager.put(expenseAdapter.adpter_expenses, "Expense_List")
-
-            }
-        }
+        TabLayoutMediator(tabLayout, viewPager){
+            tab, position -> tab.text = tabArray[position]
+        }.attach()
     }
 }

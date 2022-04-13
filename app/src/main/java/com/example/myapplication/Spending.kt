@@ -1,59 +1,73 @@
-package com.example.myapplication
+package com.example.myapplication;
 
+import android.app.Activity;
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.databinding.FragmentSpendingBinding
+import kotlinx.android.synthetic.main.fragment_spending.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class Spending : Fragment()  {
+    private var _binding: FragmentSpendingBinding? = null
+    private val binding get() = _binding!!
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Spending.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Spending : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //lateinit promises kotlin we will initialize it later
+    private lateinit var expenseAdapter : ExpenseAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?) : View? {
+        _binding = FragmentSpendingBinding.inflate(inflater, container, false)
+        val retrievedExpenseList = ExpensePreferencesManager.get<ExpenseList>("Expense_List")
+        if(retrievedExpenseList != null){
+            expenseAdapter = ExpenseAdapter(retrievedExpenseList)
+        } else {
+            expenseAdapter = ExpenseAdapter(ExpenseList(ArrayList()))
         }
+
+        val view = binding.root
+
+    return view
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_spending, container, false)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Spending.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Spending().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        //rvExpenseItems is the tag we set for the RecyclerView in the activity_main.xml
+
+        rvExpenseItems.adapter = expenseAdapter
+        rvExpenseItems.layoutManager = LinearLayoutManager(this.context)
+
+        val spinner: Spinner = view.findViewById(spnrExpenseCategory.id)
+
+        ArrayAdapter.createFromResource(
+            this.requireContext(),
+            R.array.categories_array,
+            android.R.layout.simple_spinner_item
+        ).also {adapter ->
+            //specify the loayout to use
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter;
+        }
+
+        btnAddExpense.setOnClickListener{
+            val expenseName = ExpenseNameIn.text.toString()
+            val expenseCost = ExpenseCostIn.text.toString().toDouble()
+            val expenseCategory = spnrExpenseCategory.selectedItem.toString()
+            if(expenseName.isNotEmpty() && expenseCost > 0 && expenseCategory.isNotEmpty()){
+                val expense = Expense(expenseName, expenseCost, expenseCategory)
+                expenseAdapter.addExpense(expense)
+
+                println("expense added")
+                ExpensePreferencesManager.put(expenseAdapter.adpter_expenses, "Expense_List")
+
             }
+        }
     }
 }

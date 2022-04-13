@@ -6,54 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExpenseItems"
-
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddExpense" />
-
-    <EditText
-        android:id="@+id/ExpenseNameIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Expense:    "
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/ExpenseCostIn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <EditText
-        android:id="@+id/ExpenseCostIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Cost $$  "
-        android:inputType="numberDecimal"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/spnrExpenseCategory"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <Spinner
-        android:id="@+id/spnrExpenseCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:paddingEnd="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
-    <Button
-        android:id="@+id/btnAddExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ExpenseNameIn" />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="407dp"
@@ -78,7 +30,7 @@
             android:text="Budget" />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/mainViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
